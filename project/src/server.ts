@@ -20,6 +20,23 @@ server.get('/teams', async(request, response) => {
   return [teams];
 });
 
+interface DriverPrams{
+    id: string;
+}
+
+server.get<{Params: DriverPrams}>('/drivers/:id', async(request, response) => {
+    const id = parseInt(request.params.id);
+    const driver = drivers.find(d => d.id === id)
+
+    if(!driver){
+      response.type("aplication/json").code(404);
+      return {message: "Driver not found"};
+    }else{
+        response.type("application/json").code(200);
+        return {driver};
+    }
+});
+
 server.get('/drivers', async(request, response) => {
   response.type('application/json').code(200);
   return [drivers];
